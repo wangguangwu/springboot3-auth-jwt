@@ -16,19 +16,19 @@
 ```yaml
 jwt:
   # JWT 签名密钥
-  secret: your-secret-key
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
   # JWT 访问令牌过期时间（毫秒）
   access-token:
-    expiration: 604800000  # 7天
+    expiration: 604800000
   # JWT 刷新令牌过期时间（毫秒）
   refresh-token:
-    expiration: 1209600000  # 14天
+    expiration: 1209600000
   # JWT 记住我访问令牌过期时间（毫秒）
   remember-me:
     access-token:
-      expiration: 604800000  # 7天
+      expiration: 604800000
     refresh-token:
-      expiration: 1209600000  # 14天
+      expiration: 1209600000
   # JWT 发行者
   issuer: wangguangwu
   # JWT 受众
@@ -38,11 +38,6 @@ jwt:
     domain: localhost
     access-token-name: access_token
     refresh-token-name: refresh_token
-
-spring:
-  redis:
-    host: localhost
-    port: 6379
 ```
 
 ## 核心功能实现

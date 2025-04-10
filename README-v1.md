@@ -15,13 +15,13 @@
 ```yaml
 jwt:
   # JWT 签名密钥
-  secret: your-secret-key
-  # JWT 令牌过期时间（毫秒）
-  expiration: 604800000  # 7天
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  # 访问令牌过期时间：30分钟
+  access-token-expiration: 1800000
   # JWT 发行者
   issuer: wangguangwu
-  # JWT 受众
-  audience: jwt-demo
+  # JWT 接收者
+  audience: springboot3-auth-jwt
 ```
 
 ## 核心功能实现
