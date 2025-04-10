@@ -39,19 +39,19 @@ public class ApiResponse<T> {
      * @return API 响应
      */
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(200, "操作成功", data);
+        return new ApiResponse<>(200, "SUCCESS", data);
     }
 
     /**
      * 错误响应
      *
-     * @param code    错误码
-     * @param message 错误消息
+     * @param code    状态码
+     * @param message 错误信息
      * @param <T>     数据类型
      * @return API 响应
      */
     public static <T> ApiResponse<T> error(int code, String message) {
-        return new ApiResponse<>(code, message, null);
+        return error(code, message, null);
     }
 
     /**

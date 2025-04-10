@@ -8,14 +8,31 @@ spring:
 jwt:
   # JWT 签名密钥
   secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-  # 访问令牌过期时间：30分钟
-  access-token-expiration: 1800000
+  # JWT 访问令牌过期时间（毫秒）
+  access-token:
+    expiration: 604800000
+  # JWT 刷新令牌过期时间（毫秒）
+  refresh-token:
+    expiration: 1209600000
+  # JWT 记住我访问令牌过期时间（毫秒）
+  remember-me:
+    access-token:
+      expiration: 604800000
+    refresh-token:
+      expiration: 1209600000
   # JWT 发行者
   issuer: wangguangwu
-  # JWT 接收者
-  audience: springboot3-auth-jwt
+  # JWT 受众
+  audience: jwt-demo
+  # Cookie 配置
+  cookie:
+    domain: localhost
+    access-token-name: access_token
+    refresh-token-name: refresh_token
 
 logging:
   level:
+    root: INFO
     org.springframework.security: DEBUG
     com.wangguangwu: DEBUG
+    org.springframework.web: DEBUG
