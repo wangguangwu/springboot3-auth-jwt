@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: springboot3-auth-jwt
+
+jwt:
+  # JWT 签名密钥
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  # 访问令牌过期时间：30分钟
+  access-token-expiration: 1800000
+  # JWT 发行者
+  issuer: wangguangwu
+  # JWT 接收者
+  audience: springboot3-auth-jwt
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.wangguangwu: DEBUG

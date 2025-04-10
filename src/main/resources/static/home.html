@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+            --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .welcome {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .logout {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .logout:hover {
+            background-color: #1557b0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .content-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .resource-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .resource-button {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            border: 2px solid #e9ecef;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .resource-button:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .response-container {
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: var(--transition);
+        }
+
+        .response-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .response-message {
+            white-space: pre-wrap;
+            font-family: monospace;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+
+        .response-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .response-container.error {
+            background-color: #fff5f5;
+            border-color: #fc8181;
+            color: #c53030;
+        }
+
+        .response-container.success {
+            background-color: #f0fff4;
+            border-color: #68d391;
+            color: #2f855a;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .resource-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="welcome">欢迎回来，<span id="username"></span></div>
+        <button class="logout" onclick="logout()">退出登录</button>
+    </div>
+
+    <h1>资源访问测试</h1>
+
+    <div class="content-layout">
+        <div class="resource-buttons">
+            <button class="resource-button" onclick="fetchResource('public')">访问公共资源</button>
+            <button class="resource-button" onclick="fetchResource('user')">访问用户资源</button>
+            <button class="resource-button" onclick="fetchResource('admin')">访问管理员资源</button>
+            <button class="resource-button" onclick="fetchResource('super-admin')">访问超级管理员资源</button>
+        </div>
+
+        <div id="response" class="response-container"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+        updateUsername();
+    });
+
+    function checkAuth() {
+        const token = localStorage.getItem('jwt_token');
+        if (!token) {
+            window.location.href = '/index.html';
+        }
+    }
+
+    function updateUsername() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            document.getElementById('username').textContent = username;
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('jwt_token');
+        localStorage.removeItem('username');
+        window.location.href = '/index.html';
+    }
+
+    function showResponse(message, isError = false) {
+        const responseDiv = document.getElementById('response');
+        responseDiv.innerHTML = message;
+        responseDiv.className = 'response-container ' + (isError ? 'error' : 'success');
+        responseDiv.style.display = 'block';
+        responseDiv.classList.remove('show');
+        void responseDiv.offsetWidth;
+        responseDiv.classList.add('show');
+    }
+
+    async function fetchResource(type) {
+        try {
+            const token = localStorage.getItem('jwt_token');
+            if (!token) {
+                window.location.href = '/index.html';
+                return;
+            }
+
+            const response = await fetch(`/api/resources/${type}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                
+                // 处理不同的响应状态
+                if (response.status === 401) {
+                    // token 过期或无效
+                    localStorage.removeItem('jwt_token');
+                    localStorage.removeItem('username');
+                    window.location.href = '/index.html';
+                    return;
+                } else if (response.status === 403) {
+                    // 没有权限
+                    showResponse('没有访问权限', true);
+                    return;
+                } else if (!response.ok) {
+                    // 其他错误
+                    showResponse(data.message || '请求失败', true);
+                    return;
+                }
+
+                // 成功响应
+                let message = '';
+                if (typeof data.data === 'object') {
+                    message = JSON.stringify(data.data, null, 2);
+                } else {
+                    message = data.data || data.message || '访问成功';
+                }
+                
+                showResponse('访问成功');
+            } else {
+                const text = await response.text();
+                if (response.status === 401) {
+                    localStorage.removeItem('jwt_token');
+                    localStorage.removeItem('username');
+                    window.location.href = '/index.html';
+                    return;
+                } else if (response.status === 403) {
+                    showResponse('没有访问权限', true);
+                    return;
+                } else if (!response.ok) {
+                    showResponse(text || '请求失败', true);
+                    return;
+                }
+                showResponse('访问成功');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showResponse('请求失败: ' + error.message, true);
+        }
+    }
+</script>
+</body>
+</html>
