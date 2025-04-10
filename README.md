@@ -95,7 +95,7 @@ src/main/java/com/wangguangwu/springboot3_auth_jwt/
   ```json
   {
     "username": "user",
-    "password": "password"
+    "password": "user"
   }
   ```
 - 响应：
@@ -204,10 +204,14 @@ Authorization: Bearer your-jwt-token
 
 ```yaml
 jwt:
-  secret: your-secret-key
-  access-token-expiration: 1800000  # 30分钟
-  issuer: wangguangwu
-  audience: springboot3-auth-jwt
+   # JWT 签名密钥
+   secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+   # 访问令牌过期时间：30分钟
+   access-token-expiration: 1800000
+   # JWT 发行者
+   issuer: wangguangwu
+   # JWT 接收者
+   audience: springboot3-auth-jwt
 ```
 
 ## 贡献
