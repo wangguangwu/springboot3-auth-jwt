@@ -237,52 +237,39 @@
                 }
             });
 
+            let data;
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
-                const data = await response.json();
-                
-                // 处理不同的响应状态
-                if (response.status === 401) {
-                    // token 过期或无效
-                    localStorage.removeItem('jwt_token');
-                    localStorage.removeItem('username');
-                    window.location.href = '/index.html';
-                    return;
-                } else if (response.status === 403) {
-                    // 没有权限
-                    showResponse('没有访问权限', true);
-                    return;
-                } else if (!response.ok) {
-                    // 其他错误
-                    showResponse(data.message || '请求失败', true);
-                    return;
-                }
-
-                // 成功响应
-                let message = '';
-                if (typeof data.data === 'object') {
-                    message = JSON.stringify(data.data, null, 2);
-                } else {
-                    message = data.data || data.message || '访问成功';
-                }
-                
-                showResponse('访问成功');
+                data = await response.json();
             } else {
-                const text = await response.text();
-                if (response.status === 401) {
-                    localStorage.removeItem('jwt_token');
-                    localStorage.removeItem('username');
-                    window.location.href = '/index.html';
-                    return;
-                } else if (response.status === 403) {
-                    showResponse('没有访问权限', true);
-                    return;
-                } else if (!response.ok) {
-                    showResponse(text || '请求失败', true);
-                    return;
-                }
-                showResponse('访问成功');
+                data = { message: await response.text() };
             }
+
+            // 处理不同的响应状态
+            if (response.status === 401) {
+                // token 无效，清除本地存储并跳转到登录页面
+                localStorage.removeItem('jwt_token');
+                localStorage.removeItem('username');
+                window.location.href = '/index.html';
+                return;
+            } else if (response.status === 403) {
+                // 没有权限
+                showResponse('没有访问权限', true);
+                return;
+            } else if (!response.ok) {
+                // 其他错误
+                showResponse(data.message || '请求失败', true);
+                return;
+            }
+
+            // 成功响应
+            let message = '';
+            if (typeof data.data === 'object') {
+                message = JSON.stringify(data.data, null, 2);
+            } else {
+                message = data.data || data.message || '访问成功';
+            }
+            showResponse(message);
         } catch (error) {
             console.error('Error:', error);
             showResponse('请求失败: ' + error.message, true);

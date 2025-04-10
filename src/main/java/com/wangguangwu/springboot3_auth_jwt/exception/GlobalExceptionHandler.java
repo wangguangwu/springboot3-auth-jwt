@@ -46,6 +46,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ApiResponse<Void> handleAccessDeniedException(AccessDeniedException e) {
+        log.error("AccessDenied exception", e);
         return ApiResponse.error(403, "没有访问权限");
     }
 

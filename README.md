@@ -19,6 +19,21 @@
 - 全局异常处理
 - 响应式前端界面
 
+## 版本说明
+
+项目分为两个版本：
+
+1. [v1 基础版本](README-v1.md)
+   - JWT Token 的生成和验证
+   - 基于 Token 的认证
+   - 基于角色的权限控制
+
+2. [v2 扩展版本](README-v2.md)
+   - 刷新 Token 机制
+   - Token 黑名单
+   - Cookie 管理
+   - 记住我功能
+
 ## 快速开始
 
 ### 前置条件
@@ -204,10 +219,18 @@ Authorization: Bearer your-jwt-token
 
 ```yaml
 jwt:
+  # JWT 签名密钥
   secret: your-secret-key
-  access-token-expiration: 1800000  # 30分钟
+  # JWT 访问令牌过期时间（毫秒）
+  access-token:
+    expiration: 604800000  # 7天
+  # JWT 刷新令牌过期时间（毫秒）
+  refresh-token:
+    expiration: 1209600000  # 14天
+  # JWT 发行者
   issuer: wangguangwu
-  audience: springboot3-auth-jwt
+  # JWT 受众
+  audience: jwt-demo
 ```
 
 ## 贡献
