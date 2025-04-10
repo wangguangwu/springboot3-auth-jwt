@@ -86,17 +86,17 @@ src/main/java/com/wangguangwu/springboot3_auth_jwt/
 
 1. 普通用户
    - 用户名：`user`
-   - 密码：`password`
+   - 密码：`user`
    - 权限：USER
 
 2. 管理员
    - 用户名：`admin`
-   - 密码：`password`
+   - 密码：`admin`
    - 权限：USER, ADMIN
 
 3. 超级管理员
    - 用户名：`root`
-   - 密码：`password`
+   - 密码：`root`
    - 权限：USER, ADMIN, ROOT
 
 ## API 接口和调用方式
@@ -110,7 +110,7 @@ src/main/java/com/wangguangwu/springboot3_auth_jwt/
   ```json
   {
     "username": "user",
-    "password": "password"
+    "password": "user"
   }
   ```
 - 响应：
@@ -212,26 +212,6 @@ Authorization: Bearer your-jwt-token
 - Token 过期机制
 - 基于角色的访问控制
 - 全局异常处理
-
-## 配置说明
-
-主要配置项（application.yml）：
-
-```yaml
-jwt:
-  # JWT 签名密钥
-  secret: your-secret-key
-  # JWT 访问令牌过期时间（毫秒）
-  access-token:
-    expiration: 604800000  # 7天
-  # JWT 刷新令牌过期时间（毫秒）
-  refresh-token:
-    expiration: 1209600000  # 14天
-  # JWT 发行者
-  issuer: wangguangwu
-  # JWT 受众
-  audience: jwt-demo
-```
 
 ## 贡献
 
