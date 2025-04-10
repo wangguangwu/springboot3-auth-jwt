@@ -71,17 +71,17 @@ src/main/java/com/wangguangwu/springboot3_auth_jwt/
 
 1. 普通用户
    - 用户名：`user`
-   - 密码：`password`
+   - 密码：`user`
    - 权限：USER
 
 2. 管理员
    - 用户名：`admin`
-   - 密码：`password`
+   - 密码：`admin`
    - 权限：USER, ADMIN
 
 3. 超级管理员
    - 用户名：`root`
-   - 密码：`password`
+   - 密码：`root`
    - 权限：USER, ADMIN, ROOT
 
 ## API 接口和调用方式
